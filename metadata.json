@@ -1,0 +1,5 @@
+{
+  "name": "OpsCore Config Dashboard",
+  "description": "A modern, internal operations configuration dashboard for Ads, Notifications, Risk Control, and Economy tuning.",
+  "requestFramePermissions": []
+}
