@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { ViewState, AppProfile } from './types';
 import { AdsView } from './views/AdsView';
@@ -123,11 +124,12 @@ const App: React.FC = () => {
           style={{ borderRight: '1px solid #f0f0f0', boxShadow: '0 2px 8px rgba(0,0,0,0.02)', zIndex: 10, overflowY: 'auto' }}
           width={240}
         >
-          <div className="flex items-center gap-3 p-4 mb-2">
-             <div className="w-8 h-8 rounded bg-slate-900 flex items-center justify-center text-white font-bold text-lg shadow-sm">
+          // Fix: replaced 'className' with 'class'
+          <div class="flex items-center gap-3 p-4 mb-2">
+             <div class="w-8 h-8 rounded bg-slate-900 flex items-center justify-center text-white font-bold text-lg shadow-sm">
                O
              </div>
-             {!collapsed && <span className="text-lg font-bold tracking-tight text-slate-800">OpsCore</span>}
+             {!collapsed && <span class="text-lg font-bold tracking-tight text-slate-800">OpsCore</span>}
           </div>
 
           <Menu 
@@ -139,13 +141,13 @@ const App: React.FC = () => {
           />
 
           {!collapsed && (
-            <div className="absolute bottom-6 left-0 w-full px-4">
+            <div class="absolute bottom-6 left-0 w-full px-4">
                <div 
-                 className="border-t border-slate-100 pt-4 cursor-pointer text-slate-500 hover:text-red-500 transition-colors flex items-center gap-3 px-2"
+                 class="border-t border-slate-100 pt-4 cursor-pointer text-slate-500 hover:text-red-500 transition-colors flex items-center gap-3 px-2"
                  onClick={() => setIsLoggedIn(false)}
                >
                  <LogOut size={16} />
-                 <span className="text-sm font-medium">退出登录</span>
+                 <span class="text-sm font-medium">退出登录</span>
                </div>
             </div>
           )}
@@ -153,24 +155,24 @@ const App: React.FC = () => {
 
         <Layout style={{ height: '100%', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
           <Header style={{ padding: '0 24px', background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #f0f0f0', height: 64, flexShrink: 0 }}>
-             <div className="flex items-center gap-6 min-w-0">
+             <div class="flex items-center gap-4 min-w-0">
                 {/* App Selector */}
-                <Space size={12} className="min-w-0">
-                    <div className="w-10 h-10 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center border border-indigo-100 shadow-sm shrink-0">
+                <Space size={12} class="min-w-0">
+                    <div class="w-10 h-10 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center border border-indigo-100 shadow-sm shrink-0">
                       <Gamepad2 size={20} />
                     </div>
-                    <div className="flex flex-col justify-center min-w-0">
+                    <div class="flex flex-col justify-center min-w-0">
                         <Text type="secondary" style={{ fontSize: 10, lineHeight: 1.2, textTransform: 'uppercase', fontWeight: 600, letterSpacing: '0.5px' }}>当前应用</Text>
                         <Select
                             value={selectedApp.id}
                             onChange={(value) => setSelectedApp(apps.find(app => app.id === value)!)}
                             options={apps.map(app => ({ 
                                 label: (
-                                  <div className="flex items-center justify-between w-full gap-2">
-                                    <span className="truncate">{app.name}</span>
+                                  <div class="flex items-center justify-between w-full gap-2">
+                                    <span class="truncate">{app.name}</span>
                                     {app.platform === 'Apple' 
-                                      ? <Apple size={14} className="text-slate-400 shrink-0" />
-                                      : <Smartphone size={14} className="text-slate-400 shrink-0" />
+                                      ? <Apple size={14} class="text-slate-400 shrink-0" />
+                                      : <Smartphone size={14} class="text-slate-400 shrink-0" />
                                     }
                                   </div>
                                 ), 
@@ -178,12 +180,12 @@ const App: React.FC = () => {
                             }))}
                             variant="borderless"
                             style={{ width: 200, marginLeft: -11, fontWeight: 700, fontSize: 15 }}
-                            suffixIcon={<Plus size={14} className="opacity-50"/>}
+                            suffixIcon={<Plus size={14} class="opacity-50"/>}
                             dropdownRender={(menu) => (
                                 <>
                                   {menu}
                                   <Divider style={{ margin: '8px 0' }} />
-                                  <div className="px-1 pb-1">
+                                  <div class="px-1 pb-1">
                                     <Button 
                                       type="dashed" 
                                       block 
@@ -199,24 +201,24 @@ const App: React.FC = () => {
                     </div>
                 </Space>
                 
-                <div className="h-8 w-px bg-slate-100 hidden md:block mx-2 shrink-0"></div>
+                {/* Separator Slash */}
+                <div class="text-slate-300 text-xl font-light hidden md:block mx-0 select-none">/</div>
                 
-                <Breadcrumb 
-                    className="hidden md:block min-w-0"
-                    items={[
-                        { title: <><Home size={14} className="inline mr-1 relative -top-[2px] opacity-60"/> 控制台</> },
-                        { title: getViewTitle() }
-                    ]}
-                />
+                {/* Current Page Title */}
+                <div class="hidden md:block text-base font-bold text-slate-700 min-w-0 truncate">
+                    {getViewTitle()}
+                </div>
              </div>
 
-             <div className="flex items-center gap-4 shrink-0">
+             <div class="flex items-center gap-4 shrink-0">
                 <Dropdown menu={userMenu} placement="bottomRight">
-                    <div className="flex items-center gap-3 cursor-pointer hover:bg-slate-50 py-1 px-2 rounded-full transition-colors max-w-[150px] sm:max-w-[240px]">
-                        <div className="hidden sm:flex flex-col items-end min-w-0 justify-center">
-                            <div className="text-sm font-bold text-slate-700 leading-none mb-1 truncate">Admin</div>
-                            <div className="text-[10px] text-slate-400 leading-none truncate" title="testbird@opscore.com">testbird@opscore.com</div>
+                    <div class="flex items-center gap-3 cursor-pointer hover:bg-slate-50 py-1 px-2 rounded-full transition-colors max-w-[150px] sm:max-w-[240px]">
+                        {/* Text (Left) */}
+                        <div class="hidden sm:flex flex-col items-end min-w-0 justify-center">
+                            <div class="text-sm font-bold text-slate-700 leading-none mb-1 truncate">Admin</div>
+                            <div class="text-[10px] text-slate-400 leading-none truncate" title="testbird@opscore.com">testbird@opscore.com</div>
                         </div>
+                        {/* Avatar (Right) */}
                         <Avatar style={{ backgroundColor: '#1677ff', verticalAlign: 'middle', flexShrink: 0 }} size="large">
                             A
                         </Avatar>
@@ -226,13 +228,13 @@ const App: React.FC = () => {
           </Header>
 
           <Content style={{ margin: 0, padding: '24px 24px', overflowY: 'auto', flex: 1 }}>
-            <div className="max-w-6xl mx-auto animate-fade-in">
+            <div class="max-w-6xl mx-auto animate-fade-in">
                {currentView === ViewState.ADS && <AdsView key={selectedApp.id} selectedApp={selectedApp} />}
                {currentView === ViewState.NOTIFICATIONS && <NotifyView key={selectedApp.id} selectedApp={selectedApp} />}
                {currentView === ViewState.RISK && <RiskView key={selectedApp.id} selectedApp={selectedApp} />}
                {currentView === ViewState.ECONOMY && <EconomyView key={selectedApp.id} selectedApp={selectedApp} />}
             </div>
-            <div className="text-center text-slate-400 text-xs py-6">
+            <div class="text-center text-slate-400 text-xs py-6">
                 © 2024 OpsCore 内部运营平台 • {selectedApp.package} • {selectedApp.platform}
             </div>
           </Content>
@@ -242,8 +244,8 @@ const App: React.FC = () => {
       {/* Add App Modal */}
       <Modal
         title={
-            <div className="flex items-center gap-2 mb-4">
-                <AppWindow className="text-indigo-600" size={20}/>
+            <div class="flex items-center gap-2 mb-4">
+                <AppWindow class="text-indigo-600" size={20}/>
                 <span>接入新应用</span>
             </div>
         }
@@ -282,12 +284,12 @@ const App: React.FC = () => {
             >
                 <Radio.Group>
                     <Radio value="Google">
-                        <div className="flex items-center gap-2">
+                        <div class="flex items-center gap-2">
                              <Smartphone size={16}/> Google Play
                         </div>
                     </Radio>
                     <Radio value="Apple">
-                        <div className="flex items-center gap-2">
+                        <div class="flex items-center gap-2">
                              <Apple size={16}/> Apple AppStore
                         </div>
                     </Radio>

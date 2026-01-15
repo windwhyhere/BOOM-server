@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { AdConfig, AdAggregationType, AppProfile, AdStrategyDef, AdTrafficRule } from '../types';
 import { Card, Select, Input, Button, Badge, Switch } from '../components/UI';
@@ -189,77 +190,79 @@ export const AdsView: React.FC<AdsViewProps> = ({ selectedApp }) => {
   const getStrategyName = (id: string) => config.strategies.find(s => s.id === id)?.name || '未知策略';
 
   return (
-    <div className="space-y-8 animate-fade-in pb-12">
-      <div className="flex items-center gap-2 mb-2">
-        <span className="text-xs font-bold text-primary-600 bg-primary-50 px-2 py-1 rounded-md border border-primary-100 uppercase tracking-wide">
+    // Fix: replaced 'className' with 'class' for environment compliance
+    <div class="space-y-8 animate-fade-in pb-12">
+      <div class="flex items-center gap-2 mb-2">
+        {/* Fix: Changed text color to text-blue-700 for better visibility */}
+        <span class="text-xs font-bold text-blue-700 bg-blue-50 px-2 py-1 rounded-md border border-blue-100 uppercase tracking-wide">
           广告分发配置: {selectedApp.name}
         </span>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
         {/* LEFT COLUMN: TRAFFIC RULES (Main Logic) */}
-        <div className="lg:col-span-2 space-y-6">
-            <div className="flex items-center justify-between">
+        <div class="lg:col-span-2 space-y-6">
+            <div class="flex items-center justify-between">
                 <div>
-                    <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
-                        <Layers size={20} className="text-indigo-600"/> 流量分发规则
+                    <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                        <Layers size={20} class="text-indigo-600"/> 流量分发规则
                     </h2>
-                    <p className="text-slate-500 text-sm">定义用户特征（渠道、国家、层级），分配对应广告策略。</p>
+                    <p class="text-slate-500 text-sm">定义用户特征（渠道、国家、层级），分配对应广告策略。</p>
                 </div>
                 <Button icon={<Plus size={16}/>} onClick={() => openRuleModal()}>新建规则</Button>
             </div>
 
-            <div className="space-y-4">
+            <div class="space-y-4">
                 {config.rules.sort((a,b) => a.priority - b.priority).map((rule) => (
-                    <div key={rule.id} className={`bg-white rounded-xl p-5 border border-slate-200 shadow-sm transition-all hover:border-indigo-300 relative group ${!rule.enabled ? 'opacity-60 grayscale' : ''}`}>
+                    <div key={rule.id} class={`bg-white rounded-xl p-5 border border-slate-200 shadow-sm transition-all hover:border-indigo-300 relative group ${!rule.enabled ? 'opacity-60 grayscale' : ''}`}>
                          {/* Header */}
-                         <div className="flex justify-between items-start mb-4">
-                            <div className="flex gap-3 items-center">
-                                <div className="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-sm">
+                         <div class="flex justify-between items-start mb-4">
+                            <div class="flex gap-3 items-center">
+                                <div class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-sm">
                                     P{rule.priority}
                                 </div>
                                 <div>
-                                    <h3 className="font-bold text-slate-800 text-base">{rule.name}</h3>
-                                    <div className="flex gap-2 mt-1">
-                                        {rule.conditions.channels.map(c => <Tag key={c} color="blue" className="mr-0 text-[10px]">{c}</Tag>)}
-                                        {rule.conditions.countries.map(c => <Tag key={c} color="cyan" className="mr-0 text-[10px]">{c}</Tag>)}
-                                        <Tag color="purple" className="mr-0 text-[10px]">{rule.conditions.userLevel}</Tag>
+                                    <h3 class="font-bold text-slate-800 text-base">{rule.name}</h3>
+                                    <div class="flex gap-2 mt-1">
+                                        {rule.conditions.channels.map(c => <Tag key={c} color="blue" class="mr-0 text-[10px]">{c}</Tag>)}
+                                        {rule.conditions.countries.map(c => <Tag key={c} color="cyan" class="mr-0 text-[10px]">{c}</Tag>)}
+                                        <Tag color="purple" class="mr-0 text-[10px]">{rule.conditions.userLevel}</Tag>
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-3">
+                            <div class="flex items-center gap-3">
                                 <Switch checked={rule.enabled} onChange={(v) => toggleRule(rule.id, v)} />
                                 <Button size="small" variant="ghost" icon={<Settings size={14}/>} onClick={() => openRuleModal(rule)}/>
                             </div>
                          </div>
 
                          {/* Distribution Bar */}
-                         <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
-                             <div className="flex justify-between text-xs text-slate-500 mb-2 font-medium uppercase tracking-wider">
+                         <div class="bg-slate-50 p-3 rounded-lg border border-slate-100">
+                             <div class="flex justify-between text-xs text-slate-500 mb-2 font-medium uppercase tracking-wider">
                                 <span>策略分发占比</span>
-                                <span className="flex items-center gap-1"><PieChart size={12}/> Total 100%</span>
+                                <span class="flex items-center gap-1"><PieChart size={12}/> Total 100%</span>
                              </div>
-                             <div className="flex h-3 w-full rounded-full overflow-hidden bg-slate-200">
+                             <div class="flex h-3 w-full rounded-full overflow-hidden bg-slate-200">
                                  {rule.allocations.map((alloc, idx) => {
                                      // Generate colors
                                      const colors = ['bg-indigo-500', 'bg-emerald-500', 'bg-amber-500', 'bg-rose-500'];
                                      const color = colors[idx % colors.length];
                                      return (
                                          <Tooltip key={alloc.strategyId} title={`${getStrategyName(alloc.strategyId)}: ${alloc.percentage}%`}>
-                                            <div style={{ width: `${alloc.percentage}%` }} className={`h-full ${color} hover:opacity-80 transition-opacity`}/>
+                                            <div style={{ width: `${alloc.percentage}%` }} class={`h-full ${color} hover:opacity-80 transition-opacity`}/>
                                          </Tooltip>
                                      )
                                  })}
                              </div>
-                             <div className="mt-2 space-y-1">
+                             <div class="mt-2 space-y-1">
                                  {rule.allocations.map((alloc, idx) => (
-                                     <div key={alloc.strategyId} className="flex justify-between text-xs items-center">
-                                         <span className="flex items-center gap-2">
-                                            <div className={`w-2 h-2 rounded-full ${['bg-indigo-500', 'bg-emerald-500', 'bg-amber-500', 'bg-rose-500'][idx % 4]}`}></div>
-                                            <span className="text-slate-700">{getStrategyName(alloc.strategyId)}</span>
+                                     <div key={alloc.strategyId} class="flex justify-between text-xs items-center">
+                                         <span class="flex items-center gap-2">
+                                            <div class={`w-2 h-2 rounded-full ${['bg-indigo-500', 'bg-emerald-500', 'bg-amber-500', 'bg-rose-500'][idx % 4]}`}></div>
+                                            <span class="text-slate-700">{getStrategyName(alloc.strategyId)}</span>
                                          </span>
-                                         <span className="font-mono font-bold text-slate-600">{alloc.percentage}%</span>
+                                         <span class="font-mono font-bold text-slate-600">{alloc.percentage}%</span>
                                      </div>
                                  ))}
                              </div>
@@ -270,44 +273,44 @@ export const AdsView: React.FC<AdsViewProps> = ({ selectedApp }) => {
         </div>
 
         {/* RIGHT COLUMN: STRATEGY LIBRARY (Definitions) */}
-        <div className="space-y-6">
-            <div className="flex items-center justify-between">
+        <div class="space-y-6">
+            <div class="flex items-center justify-between">
                 <div>
-                    <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
-                        <Settings size={20} className="text-emerald-600"/> 策略库
+                    <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                        <Settings size={20} class="text-emerald-600"/> 策略库
                     </h2>
-                    <p className="text-slate-500 text-sm">定义具体的广告聚合与Provider。</p>
+                    <p class="text-slate-500 text-sm">定义具体的广告聚合与Provider。</p>
                 </div>
                 <Button size="small" variant="secondary" icon={<Plus size={14}/>} onClick={() => openStratModal()}>添加</Button>
             </div>
 
-            <div className="grid grid-cols-1 gap-4">
+            <div class="grid grid-cols-1 gap-4">
                 {config.strategies.map(strat => (
-                    <div key={strat.id} className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow group relative">
-                         <div className="flex items-start justify-between">
-                             <div className="flex gap-3">
-                                 <div className="p-2 bg-emerald-50 text-emerald-600 rounded-lg h-fit">
+                    <div key={strat.id} class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow group relative">
+                         <div class="flex items-start justify-between">
+                             <div class="flex gap-3">
+                                 <div class="p-2 bg-emerald-50 text-emerald-600 rounded-lg h-fit">
                                      <BarChart size={18} />
                                  </div>
                                  <div>
-                                     <div className="font-bold text-slate-800 text-sm">{strat.name}</div>
-                                     <div className="text-xs text-slate-500 mt-1 flex flex-wrap gap-1">
+                                     <div class="font-bold text-slate-800 text-sm">{strat.name}</div>
+                                     <div class="text-xs text-slate-500 mt-1 flex flex-wrap gap-1">
                                          <Badge color="blue">{strat.provider}</Badge>
-                                         <span className="bg-slate-100 px-1.5 py-0.5 rounded text-slate-500">{strat.aggregationType}</span>
+                                         <span class="bg-slate-100 px-1.5 py-0.5 rounded text-slate-500">{strat.aggregationType}</span>
                                      </div>
                                  </div>
                              </div>
-                             <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                             <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                                 <Button size="small" variant="ghost" icon={<Settings size={14}/>} onClick={() => openStratModal(strat)}/>
-                                <Button size="small" variant="ghost" className="text-red-500 hover:text-red-600" icon={<Trash2 size={14}/>} onClick={() => deleteStrategy(strat.id)}/>
+                                <Button size="small" variant="ghost" class="text-red-500 hover:text-red-600" icon={<Trash2 size={14}/>} onClick={() => deleteStrategy(strat.id)}/>
                              </div>
                          </div>
                     </div>
                 ))}
             </div>
 
-            <div className="bg-amber-50 border border-amber-100 p-4 rounded-xl text-xs text-amber-800 leading-relaxed">
-                 <div className="flex items-center gap-2 font-bold mb-1"><AlertCircle size={14}/> 说明</div>
+            <div class="bg-amber-50 border border-amber-100 p-4 rounded-xl text-xs text-amber-800 leading-relaxed">
+                 <div class="flex items-center gap-2 font-bold mb-1"><AlertCircle size={14}/> 说明</div>
                  策略库仅定义"怎么展示广告"（如使用TopOn单聚合）。具体的"给谁展示"（如MTG用户）请在左侧规则中配置。
             </div>
         </div>
@@ -349,23 +352,23 @@ export const AdsView: React.FC<AdsViewProps> = ({ selectedApp }) => {
         width={600}
       >
           <Form form={ruleForm} layout="vertical" onFinish={handleSaveRule}>
-              <div className="grid grid-cols-4 gap-4">
-                <Form.Item name="name" label="规则名称" className="col-span-3" rules={[{ required: true }]}>
+              <div class="grid grid-cols-4 gap-4">
+                <Form.Item name="name" label="规则名称" class="col-span-3" rules={[{ required: true }]}>
                     <AntInput placeholder="例如: MTG 新用户" />
                 </Form.Item>
-                <Form.Item name="priority" label="优先级" className="col-span-1" help="小号优先">
+                <Form.Item name="priority" label="优先级" class="col-span-1" help="小号优先">
                     <AntInput type="number" />
                 </Form.Item>
               </div>
 
-              <div className="bg-slate-50 p-4 rounded-lg mb-6 border border-slate-100">
-                  <h4 className="text-xs font-bold text-slate-500 uppercase mb-3 flex items-center gap-1"><Users size={12}/> 定向条件</h4>
+              <div class="bg-slate-50 p-4 rounded-lg mb-6 border border-slate-100">
+                  <h4 class="text-xs font-bold text-slate-500 uppercase mb-3 flex items-center gap-1"><Users size={12}/> 定向条件</h4>
                   <Form.Item name="channels" label="买量渠道 (Channel)" rules={[{ required: true, message: '请选择至少一个渠道' }]}>
                       <AntSelect mode="multiple" placeholder="选择渠道源" allowClear>
                           {PRESET_CHANNELS.map(c => <Option key={c} value={c}>{c}</Option>)}
                       </AntSelect>
                   </Form.Item>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div class="grid grid-cols-2 gap-4">
                     <Form.Item name="countries" label="国家/地区" rules={[{ required: true }]}>
                         <AntSelect mode="tags" placeholder="输入国家代码, 如 US" tokenSeparators={[',', ' ']} />
                     </Form.Item>
@@ -377,22 +380,22 @@ export const AdsView: React.FC<AdsViewProps> = ({ selectedApp }) => {
                   </div>
               </div>
 
-              <div className="bg-indigo-50 p-4 rounded-lg border border-indigo-100">
-                  <h4 className="text-xs font-bold text-indigo-800 uppercase mb-3 flex items-center gap-1"><PieChart size={12}/> 流量分配 (总和需为 100%)</h4>
+              <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-100">
+                  <h4 class="text-xs font-bold text-indigo-800 uppercase mb-3 flex items-center gap-1"><PieChart size={12}/> 流量分配 (总和需为 100%)</h4>
                   
-                  {config.strategies.length === 0 && <div className="text-red-500 text-xs">请先新建策略库</div>}
+                  {config.strategies.length === 0 && <div class="text-red-500 text-xs">请先新建策略库</div>}
 
                   {config.strategies.map(strat => (
                       <Form.Item 
                         key={strat.id} 
                         name={['allocations', strat.id]} 
-                        label={<span className="text-xs font-medium text-slate-600">{strat.name} <span className="opacity-50">({strat.provider})</span></span>}
-                        className="mb-2"
+                        label={<span class="text-xs font-medium text-slate-600">{strat.name} <span class="opacity-50">({strat.provider})</span></span>}
+                        class="mb-2"
                         initialValue={0}
                       >
-                          <div className="flex items-center gap-4">
-                              <Slider className="flex-1" min={0} max={100} tooltip={{ formatter: (v) => `${v}%` }} />
-                              <div className="w-16">
+                          <div class="flex items-center gap-4">
+                              <Slider class="flex-1" min={0} max={100} tooltip={{ formatter: (v) => `${v}%` }} />
+                              <div class="w-16">
                                 <AntInput suffix="%" size="small" />
                               </div>
                           </div>

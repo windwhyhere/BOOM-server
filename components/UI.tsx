@@ -13,11 +13,11 @@ const { Text } = Typography;
 const { TextArea: AntTextArea } = AntInput;
 
 // --- Card ---
-export const Card: React.FC<{ children: ReactNode; title?: string; className?: string; action?: ReactNode }> = ({ children, title, className = '', action }) => (
+export const Card: React.FC<{ children: ReactNode; title?: string; className?: string; class?: string; action?: ReactNode }> = ({ children, title, className = '', class: cssClass = '', action }) => (
   <AntCard 
     title={title} 
     extra={action} 
-    className={`shadow-sm rounded-lg ${className}`}
+    className={`shadow-sm rounded-lg ${className} ${cssClass}`}
     bordered={false}
     style={{ borderRadius: '8px' }}
   >
@@ -33,12 +33,13 @@ interface InputProps {
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   type?: string;
   placeholder?: string;
+  class?: string;
   className?: string;
 }
-export const Input: React.FC<InputProps> = ({ label, className = '', ...props }) => (
+export const Input: React.FC<InputProps> = ({ label, class: cssClass = '', className = '', ...props }) => (
   <div className="flex flex-col gap-1 w-full mb-1">
     {label && <Text type="secondary" className="text-xs uppercase font-semibold">{label}</Text>}
-    <AntInput {...props} className={className} />
+    <AntInput {...({ ...props, className: `${className} ${cssClass}` } as any)} />
   </div>
 );
 
@@ -48,13 +49,14 @@ interface TextAreaProps {
     rows?: number;
     value?: string;
     onChange?: React.ChangeEventHandler<HTMLTextAreaElement>;
-    className?: string;
+    class?: string;
     placeholder?: string;
+    className?: string;
 }
-export const TextArea: React.FC<TextAreaProps> = ({ label, className = '', ...props }) => (
+export const TextArea: React.FC<TextAreaProps> = ({ label, class: cssClass = '', className = '', ...props }) => (
     <div className="flex flex-col gap-1 w-full mb-1">
       {label && <Text type="secondary" className="text-xs uppercase font-semibold">{label}</Text>}
-      <AntTextArea {...props} className={className} />
+      <AntTextArea {...({ ...props, className: `${className} ${cssClass}` } as any)} />
     </div>
 );
 
@@ -64,9 +66,10 @@ interface SelectProps {
   options: { label: string; value: string }[];
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  class?: string;
   className?: string;
 }
-export const Select: React.FC<SelectProps> = ({ label, options, value, onChange, className = '', ...props }) => {
+export const Select: React.FC<SelectProps> = ({ label, options, value, onChange, class: cssClass = '', className = '', ...props }) => {
   // Adapter to convert AntD onChange (value) back to Event object expected by views
   const handleChange = (val: string) => {
     if (onChange) {
@@ -81,8 +84,8 @@ export const Select: React.FC<SelectProps> = ({ label, options, value, onChange,
         value={value}
         onChange={handleChange}
         options={options}
-        className={`w-full ${className}`}
-        {...props}
+        style={{ width: '100%' }}
+        {...({ ...props, className: `w-full ${className} ${cssClass}` } as any)}
       />
     </div>
   );
@@ -111,8 +114,9 @@ interface ButtonProps {
   onClick?: () => void;
   size?: 'large' | 'middle' | 'small';
   className?: string;
+  class?: string;
 }
-export const Button: React.FC<ButtonProps> = ({ children, variant = 'primary', icon, className = '', ...props }) => {
+export const Button: React.FC<ButtonProps> = ({ children, variant = 'primary', icon, className = '', class: cssClass = '', ...props }) => {
   let type: "primary" | "default" | "text" | "link" | "dashed" | undefined = "default";
   let danger = false;
   let ghost = false;
@@ -126,10 +130,9 @@ export const Button: React.FC<ButtonProps> = ({ children, variant = 'primary', i
     <AntButton 
         type={type} 
         danger={danger} 
-        ghost={ghost}
+        ghost={ghost} 
         icon={icon} 
-        className={className} 
-        {...props}
+        {...({ ...props, className: `${className} ${cssClass}` } as any)}
     >
       {children}
     </AntButton>

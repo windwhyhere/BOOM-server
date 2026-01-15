@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { RiskConfig, AppProfile, ShuMengLog } from '../types';
 import { Card, Switch, Badge, TextArea, Button } from '../components/UI';
@@ -96,9 +97,9 @@ export const RiskView: React.FC<RiskViewProps> = ({ selectedApp }) => {
   ];
 
   const columns = [
-    { title: 'ID', dataIndex: 'id', key: 'id', width: 80, render: (text: string) => <span className="text-xs font-mono">{text}</span> },
-    { title: 'User ID', dataIndex: 'user_id', key: 'user_id', render: (text: string) => <span className="text-xs text-blue-600">{text}</span> },
-    { title: 'Device ID', dataIndex: 'device_id', key: 'device_id', ellipsis: true, render: (text: string) => <span className="text-xs text-slate-500">{text}</span> },
+    { title: 'ID', dataIndex: 'id', key: 'id', width: 80, render: (text: string) => <span class="text-xs font-mono">{text}</span> },
+    { title: 'User ID', dataIndex: 'user_id', key: 'user_id', render: (text: string) => <span class="text-xs text-blue-600">{text}</span> },
+    { title: 'Device ID', dataIndex: 'device_id', key: 'device_id', ellipsis: true, render: (text: string) => <span class="text-xs text-slate-500">{text}</span> },
     { title: 'Platform', dataIndex: 'platform', key: 'platform', width: 80 },
     { title: 'Event', dataIndex: 'event_code', key: 'event_code' },
     { 
@@ -119,60 +120,61 @@ export const RiskView: React.FC<RiskViewProps> = ({ selectedApp }) => {
         render: (tags: string) => (
             <>
                 {tags.split(',').map(tag => (
-                    <Tag key={tag} className="mr-1 text-[10px]">{tag}</Tag>
+                    <Tag key={tag} class="mr-1 text-[10px]">{tag}</Tag>
                 ))}
             </>
         )
     },
-    { title: 'Time', dataIndex: 'created_at', key: 'created_at', width: 150, render: (text: string) => <span className="text-xs text-slate-400">{text}</span> },
+    { title: 'Time', dataIndex: 'created_at', key: 'created_at', width: 150, render: (text: string) => <span class="text-xs text-slate-400">{text}</span> },
   ];
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-2 mb-2">
-         <span className="text-xs font-bold text-red-600 bg-red-50 px-2 py-1 rounded-md border border-red-100 uppercase tracking-wide">
+    // Fix: replaced 'className' with 'class'
+    <div class="space-y-6">
+      <div class="flex items-center gap-2 mb-2">
+         <span class="text-xs font-bold text-red-600 bg-red-50 px-2 py-1 rounded-md border border-red-100 uppercase tracking-wide">
            安全概览: {selectedApp.name}
          </span>
       </div>
 
       {/* High Level Switches */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         
         {/* Cloak Card */}
-        <Card className="bg-gradient-to-br from-indigo-500 to-indigo-600 text-white border-none shadow-indigo-500/20">
-          <div className="flex justify-between items-start">
-            <div className="flex gap-3">
-              <div className="p-2 bg-white/20 rounded-lg backdrop-blur-sm">
-                <ShieldAlert className="text-white" size={24} />
+        <Card class="bg-white border-none shadow-sm ring-1 ring-slate-200">
+          <div class="flex justify-between items-start">
+            <div class="flex gap-3">
+              <div class="p-2 bg-indigo-50 rounded-lg">
+                <ShieldAlert class="text-indigo-600" size={24} />
               </div>
               <div>
-                <h3 className="font-bold text-lg">Cloak 屏蔽系统</h3>
-                <p className="text-indigo-100/70 text-xs mt-1">仅对指定版本生效 (Version Control)</p>
+                <h3 class="font-bold text-lg text-slate-800">Cloak 屏蔽系统</h3>
+                <p class="text-slate-500 text-xs mt-1">仅对指定版本生效 (Version Control)</p>
               </div>
             </div>
             
           </div>
 
           {/* Version Control Section */}
-          <div className="mt-6">
-              <div className="flex items-center justify-between mb-3">
-                  <span className="text-sm font-medium text-indigo-50">启用版本拦截</span>
+          <div class="mt-6">
+              <div class="flex items-center justify-between mb-3">
+                  <span class="text-sm font-medium text-slate-700">启用版本拦截</span>
                   <AntSwitch 
                         checked={config.cloak.enabled}
                         onChange={(v) => setConfig({...config, cloak: {...config.cloak, enabled: v}})}
-                        className="bg-indigo-700/50"
                   />
               </div>
               
-              <div className={`transition-all duration-300 ${config.cloak.enabled ? 'opacity-100 h-auto' : 'opacity-50 h-auto grayscale'}`}>
+              <div class={`transition-all duration-300 ${config.cloak.enabled ? 'opacity-100 h-auto' : 'opacity-50 h-auto grayscale'}`}>
                  <input
                    disabled={!config.cloak.enabled}
                    value={config.cloak.versions}
-                   onChange={(e) => setConfig({...config, cloak: {...config.cloak, versions: e.target.value}})}
-                   className="w-full bg-white/10 border border-indigo-400/30 rounded-lg px-3 py-2 text-sm text-white placeholder-indigo-300/50 focus:outline-none focus:bg-white/20 focus:border-indigo-300/50 transition-all font-mono"
+                   // Fix: Casting target to HTMLInputElement
+                   onChange={(e) => setConfig({...config, cloak: {...config.cloak, versions: (e.target as any).value}})}
+                   class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition-all font-mono"
                    placeholder="输入版本号 (如 1.0.0, 1.2.0)"
                  />
-                 <p className="text-[10px] text-indigo-200 mt-2 opacity-80 flex items-center gap-1">
+                 <p class="text-[10px] text-slate-500 mt-2 opacity-80 flex items-center gap-1">
                     <ShieldCheck size={10} />
                     Cloak 策略将仅应用于上述版本列表。
                  </p>
@@ -181,38 +183,38 @@ export const RiskView: React.FC<RiskViewProps> = ({ selectedApp }) => {
         </Card>
 
         {/* ShuMeng Card */}
-        <Card className="bg-white">
-          <div className="flex justify-between items-start mb-4">
-            <div className="flex gap-3">
-              <div className="p-2 bg-slate-100 rounded-lg text-slate-600">
+        <Card class="bg-white">
+          <div class="flex justify-between items-start mb-4">
+            <div class="flex gap-3">
+              <div class="p-2 bg-slate-100 rounded-lg text-slate-600">
                 <Activity size={24} />
               </div>
               <div>
-                <h3 className="font-bold text-lg text-slate-800">ShuMeng (数盟)</h3>
-                <p className="text-slate-500 text-sm">第三方风控数据</p>
+                <h3 class="font-bold text-lg text-slate-800">ShuMeng (数盟)</h3>
+                <p class="text-slate-500 text-sm">第三方风控数据</p>
               </div>
             </div>
           </div>
           
-          <div className="space-y-3">
-              <div className="flex items-center justify-between p-2 bg-slate-50 rounded-lg">
-                  <span className="text-sm font-medium text-slate-700">SDK 采集开关</span>
+          <div class="space-y-3">
+              <div class="flex items-center justify-between p-2 bg-slate-50 rounded-lg">
+                  <span class="text-sm font-medium text-slate-700">SDK 采集开关</span>
                   <Switch 
                     checked={config.shumeng.sdkEnabled}
                     onChange={(v) => setConfig({...config, shumeng: {...config.shumeng, sdkEnabled: v}})}
                   />
               </div>
-              <div className="flex items-center justify-between p-2 bg-slate-50 rounded-lg">
-                  <span className="text-sm font-medium text-slate-700">服务端拦截开关</span>
+              <div class="flex items-center justify-between p-2 bg-slate-50 rounded-lg">
+                  <span class="text-sm font-medium text-slate-700">服务端拦截开关</span>
                   <Switch 
                     checked={config.shumeng.serverEnabled}
                     onChange={(v) => setConfig({...config, shumeng: {...config.shumeng, serverEnabled: v}})}
                   />
               </div>
               
-              <div className="pt-3 border-t border-slate-100">
-                  <div className="flex items-center justify-between mb-2">
-                       <span className="text-xs text-slate-500 font-medium">拦截数据概览</span>
+              <div class="pt-3 border-t border-slate-100">
+                  <div class="flex items-center justify-between mb-2">
+                       <span class="text-xs text-slate-500 font-medium">拦截数据概览</span>
                        <DatePicker 
                           size="small" 
                           value={statsDate} 
@@ -221,13 +223,13 @@ export const RiskView: React.FC<RiskViewProps> = ({ selectedApp }) => {
                           allowClear={false}
                        />
                   </div>
-                  <div className="flex items-center justify-between">
-                      <div className="flex gap-4">
+                  <div class="flex items-center justify-between">
+                      <div class="flex gap-4">
                           <Statistic 
                             title="受影响用户数" 
                             value={128} 
                             valueStyle={{fontSize: 20, fontWeight: 700, color: '#0f172a'}} 
-                            prefix={<ShieldCheck size={18} className="text-red-500 inline mr-1" />} 
+                            prefix={<ShieldCheck size={18} class="text-red-500 inline mr-1" />} 
                           />
                       </div>
                       <Button 
@@ -246,11 +248,11 @@ export const RiskView: React.FC<RiskViewProps> = ({ selectedApp }) => {
       
       {/* Logs Table Section (Conditional) */}
       {showLogs && (
-        <div className="animate-fade-in">
+        <div class="animate-fade-in">
            <Card 
              title="服务端拦截日志查询" 
              action={
-               <div className="flex gap-2">
+               <div class="flex gap-2">
                    <RangePicker size="small" style={{ width: 240 }} />
                    <Button size="small" icon={<Search size={14} />}>搜索</Button>
                </div>
@@ -263,7 +265,7 @@ export const RiskView: React.FC<RiskViewProps> = ({ selectedApp }) => {
                  pagination={{ pageSize: 5 }}
                  expandable={{
                     expandedRowRender: (record) => (
-                        <div className="p-2 bg-slate-50 rounded font-mono text-xs text-slate-600">
+                        <div class="p-2 bg-slate-50 rounded font-mono text-xs text-slate-600">
                             <strong>Raw Response:</strong> {record.raw_response}
                         </div>
                     ),
@@ -273,15 +275,15 @@ export const RiskView: React.FC<RiskViewProps> = ({ selectedApp }) => {
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         
         {/* Device Fingerprinting */}
-        <div className="md:col-span-2">
-          <Card title="设备环境检测" action={<Smartphone size={18} className="text-slate-400"/>}>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="md:col-span-2">
+          <Card title="设备环境检测" action={<Smartphone size={18} class="text-slate-400"/>}>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {checkItems.map((item) => (
-                <div key={item.key} className="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
-                  <span className="text-sm font-medium text-slate-700">{item.label}</span>
+                <div key={item.key} class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
+                  <span class="text-sm font-medium text-slate-700">{item.label}</span>
                   <Switch 
                     checked={config.deviceChecks[item.key]}
                     onChange={() => toggleDeviceCheck(item.key)}
@@ -294,17 +296,17 @@ export const RiskView: React.FC<RiskViewProps> = ({ selectedApp }) => {
 
         {/* Attribution / Organic */}
         <div>
-          <Card title="归因与自然量" action={<Eye size={18} className="text-slate-400"/>}>
-            <div className="space-y-5">
-               <div className="bg-blue-50 p-4 rounded-xl text-xs text-blue-700 leading-relaxed">
+          <Card title="归因与自然量" action={<Eye size={18} class="text-slate-400"/>}>
+            <div class="space-y-5">
+               <div class="bg-blue-50 p-4 rounded-xl text-xs text-blue-700 leading-relaxed">
                   识别自然用户并应用严格广告策略。支持 MMP 归因回调或 Play Store Referrer 参数匹配。
                </div>
 
                {/* MMP */}
-               <div className="flex items-center justify-between py-1">
+               <div class="flex items-center justify-between py-1">
                   <div>
-                      <div className="font-medium text-slate-700 text-sm">MMP 归因</div>
-                      <div className="text-xs text-slate-400">AppsFlyer / Adjust</div>
+                      <div class="font-medium text-slate-700 text-sm">MMP 归因</div>
+                      <div class="text-xs text-slate-400">AppsFlyer / Adjust</div>
                   </div>
                   <Switch 
                     checked={config.attribution.mmpEnabled} 
@@ -312,14 +314,14 @@ export const RiskView: React.FC<RiskViewProps> = ({ selectedApp }) => {
                   />
                </div>
                
-               <div className="border-t border-slate-100 my-1"></div>
+               <div class="border-t border-slate-100 my-1"></div>
 
                {/* Referrer */}
-               <div className="space-y-3">
-                  <div className="flex items-center justify-between">
+               <div class="space-y-3">
+                  <div class="flex items-center justify-between">
                        <div>
-                          <div className="font-medium text-slate-700 text-sm">Referrer 识别</div>
-                          <div className="text-xs text-slate-400">Google Play Install Referrer</div>
+                          <div class="font-medium text-slate-700 text-sm">Referrer 识别</div>
+                          <div class="text-xs text-slate-400">Google Play Install Referrer</div>
                       </div>
                       <Switch 
                           checked={config.attribution.referrerEnabled} 
@@ -328,14 +330,15 @@ export const RiskView: React.FC<RiskViewProps> = ({ selectedApp }) => {
                   </div>
                   
                   {config.attribution.referrerEnabled && (
-                      <div className="bg-slate-50 p-3 rounded-lg border border-slate-100 animate-fade-in">
+                      <div class="bg-slate-50 p-3 rounded-lg border border-slate-100 animate-fade-in">
                           <TextArea 
                               label="屏蔽参数 (多个用逗号分隔)"
                               placeholder="例如: utm_source=organic, utm_medium=(none)"
                               rows={4}
                               value={config.attribution.referrerParams}
-                              onChange={(e) => setConfig({...config, attribution: {...config.attribution, referrerParams: e.target.value}})}
-                              className="text-xs font-mono"
+                              // Fix: casting e.target
+                              onChange={(e) => setConfig({...config, attribution: {...config.attribution, referrerParams: (e.target as any).value}})}
+                              class="text-xs font-mono"
                           />
                       </div>
                   )}

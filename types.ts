@@ -1,23 +1,12 @@
-// Enums
-export enum AdAggregationType {
-  SINGLE = '单聚合 (主流)',
-  WATERFALL = '多聚合 Waterfall',
-  BIDDING = '多聚合 Bidding'
-}
 
-export enum NotifType {
-  DATA = 'data',
-  NOTICE = 'notice'
-}
-
+// View state enumeration for navigation
 export enum ViewState {
-  ADS = 'ads',
-  NOTIFICATIONS = 'notifications',
-  RISK = 'risk',
-  ECONOMY = 'economy'
+  ADS = 'ADS',
+  NOTIFICATIONS = 'NOTIFICATIONS',
+  RISK = 'RISK',
+  ECONOMY = 'ECONOMY'
 }
 
-// Interfaces
 export interface AppProfile {
   id: string;
   name: string;
@@ -25,18 +14,32 @@ export interface AppProfile {
   platform: 'Google' | 'Apple';
 }
 
-// --- New Ads Structure ---
+// --- Strategy Pool (Used by legacy or shared components) ---
+export interface StrategyItem {
+  id: string;
+  title: string;
+  body: string;
+  imageUrl?: string;
+}
+
+export interface StrategyChannel {
+  id: string;
+  name: string;
+  strategies: StrategyItem[];
+}
+
+// --- Ads Management Types ---
+export enum AdAggregationType {
+  SINGLE = 'SINGLE',
+  WATERFALL = 'WATERFALL',
+  BIDDING = 'BIDDING'
+}
 
 export interface AdStrategyDef {
   id: string;
   name: string;
   aggregationType: AdAggregationType;
-  provider: string; // TopOn, Max, Admob, TradPlus
-}
-
-export interface AdAllocation {
-  strategyId: string;
-  percentage: number; // 0-100
+  provider: string;
 }
 
 export interface AdTrafficRule {
@@ -45,11 +48,14 @@ export interface AdTrafficRule {
   priority: number;
   enabled: boolean;
   conditions: {
-    channels: string[]; // UA Source: Facebook, MTG, Applovin, Organic
-    countries: string[]; // US, CN, etc.
-    userLevel: string; // New, ARPU > 5, All
+    channels: string[];
+    countries: string[];
+    userLevel: string;
   };
-  allocations: AdAllocation[];
+  allocations: {
+    strategyId: string;
+    percentage: number;
+  }[];
 }
 
 export interface AdConfig {
@@ -57,20 +63,24 @@ export interface AdConfig {
   rules: AdTrafficRule[];
 }
 
-// -------------------------
+// --- Notifications Management Types ---
+export enum NotifType {
+  DATA = 'data',
+  NOTICE = 'notice'
+}
 
 export interface FCMStrategy {
   id: string;
   title: string;
   body: string;
-  imageUrl: string;
+  imageUrl?: string;
 }
 
 export interface FCMTopic {
   id: string;
   name: string;
   type: NotifType;
-  priority: 'high' | 'normal' | 'low';
+  priority: string;
   intervalMins: number;
   strategies: FCMStrategy[];
 }
@@ -79,7 +89,7 @@ export interface LocalStrategy {
   id: string;
   title: string;
   body: string;
-  imageUrl: string;
+  imageUrl?: string;
 }
 
 export interface LocalChannel {
@@ -94,7 +104,7 @@ export interface MediaStrategy {
   id: string;
   title: string;
   body: string;
-  imageUrl: string;
+  imageUrl?: string;
 }
 
 export interface MediaChannel {
@@ -106,6 +116,7 @@ export interface MediaChannel {
 }
 
 export interface NotificationConfig {
+  globalEnabled: boolean;
   fcm: {
     enabled: boolean;
     jsonConfig: string;
@@ -113,31 +124,19 @@ export interface NotificationConfig {
   };
   local: {
     enabled: boolean;
-    channels: LocalChannel[]; 
+    channels: LocalChannel[];
   };
   media: {
     enabled: boolean;
     channels: MediaChannel[];
   };
-  globalEnabled: boolean;
 }
 
-export interface ShuMengLog {
-  id: string;
-  user_id: string;
-  device_id: string;
-  platform: string;
-  event_code: string;
-  risk_level: string;
-  risk_tags: string;
-  raw_response: string;
-  created_at: string;
-}
-
+// --- Risk Management Types ---
 export interface RiskConfig {
   cloak: {
-    enabled: boolean; // Controls whether version-based filtering is active
-    versions: string; // Target versions
+    enabled: boolean;
+    versions: string;
   };
   shumeng: {
     sdkEnabled: boolean;
@@ -155,36 +154,50 @@ export interface RiskConfig {
   attribution: {
     mmpEnabled: boolean;
     referrerEnabled: boolean;
-    referrerParams: string; // Comma separated or multiline
+    referrerParams: string;
   };
+}
+
+export interface ShuMengLog {
+  id: string;
+  user_id: string;
+  device_id: string;
+  platform: string;
+  event_code: string;
+  risk_level: 'HIGH' | 'MEDIUM' | 'LOW';
+  risk_tags: string;
+  raw_response: string;
+  created_at: string;
+}
+
+// --- Economy Management Types ---
+export interface WithdrawalTask {
+  id: string;
+  name: string;
+  count?: number;
+  days?: number;
+  reward?: number;
+  condition?: string;
+  status?: boolean;
 }
 
 export interface EconomyRule {
   id: string;
-  minBalance: number; // Start of dollar range
-  maxBalance: number; // End of dollar range
-  interstitialProb: number; // 0-100%
-  rewardedProb: number; // 0-100%
-  rhythms: Record<string, number>; // Dynamic rhythm values e.g. { 'quiz': 10, 'wheel': 50 }
-}
-
-export interface WithdrawalTask {
-  id: string;
-  name: string;
-  count?: number; // 次数要求
-  days?: number; // 天数要求
-}
-
-export interface QueueConfig {
-  enabled: boolean;
-  initialRank: number;
-  totalRank: number;
-  advancements: number[]; // Array of rank improvements per task
+  minBalance: number;
+  maxBalance: number;
+  interstitialProb: number;
+  rewardedProb: number;
+  rhythms: Record<string, number>;
 }
 
 export interface EconomyConfig {
-  rhythmKeys: string[]; // Definition of available rhythm fields
+  rhythmKeys: string[];
   rules: EconomyRule[];
   withdrawalTasks: WithdrawalTask[];
-  queue: QueueConfig;
+  queue: {
+    enabled: boolean;
+    initialRank: number;
+    totalRank: number;
+    advancements: number[];
+  };
 }

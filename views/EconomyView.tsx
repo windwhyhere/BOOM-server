@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo } from 'react';
 import { EconomyConfig, EconomyRule, AppProfile, WithdrawalTask } from '../types';
 import { Card, Input } from '../components/UI';
@@ -178,21 +179,21 @@ export const EconomyView: React.FC<EconomyViewProps> = ({ selectedApp }) => {
         width: 180,
         fixed: 'left',
         render: (_, record) => (
-            <div className="flex items-center gap-1">
+            <div class="flex items-center gap-1">
                 <InputNumber 
                     min={0}
                     value={record.minBalance}
                     onChange={(v) => updateRule(record.id, 'minBalance', v)}
-                    className="w-[70px] text-xs"
+                    class="w-[70px] text-xs"
                     prefix="$"
                     controls={false}
                 />
-                <ArrowRight size={12} className="text-slate-400 shrink-0" />
+                <ArrowRight size={12} class="text-slate-400 shrink-0" />
                 <InputNumber 
                     min={0}
                     value={record.maxBalance}
                     onChange={(v) => updateRule(record.id, 'maxBalance', v)}
-                    className="w-[70px] text-xs"
+                    class="w-[70px] text-xs"
                     prefix="$"
                     controls={false}
                 />
@@ -204,9 +205,9 @@ export const EconomyView: React.FC<EconomyViewProps> = ({ selectedApp }) => {
         key: 'ads',
         width: 160,
         render: (_, record) => (
-            <div className="flex flex-col gap-1">
-                 <div className="flex items-center justify-between">
-                    <span className="text-[10px] text-slate-500 uppercase w-8">插屏</span>
+            <div class="flex flex-col gap-1">
+                 <div class="flex items-center justify-between">
+                    <span class="text-[10px] text-slate-500 uppercase w-8">插屏</span>
                     <InputNumber 
                         size="small"
                         min={0} max={100}
@@ -214,11 +215,11 @@ export const EconomyView: React.FC<EconomyViewProps> = ({ selectedApp }) => {
                         onChange={(v) => updateRule(record.id, 'interstitialProb', v)}
                         formatter={(value) => `${value}%`}
                         parser={(value) => value?.replace('%', '') as unknown as number}
-                        className="w-20"
+                        class="w-20"
                     />
                  </div>
-                 <div className="flex items-center justify-between">
-                    <span className="text-[10px] text-slate-500 uppercase w-8">激励</span>
+                 <div class="flex items-center justify-between">
+                    <span class="text-[10px] text-slate-500 uppercase w-8">激励</span>
                     <InputNumber 
                         size="small"
                         min={0} max={100}
@@ -226,7 +227,7 @@ export const EconomyView: React.FC<EconomyViewProps> = ({ selectedApp }) => {
                         onChange={(v) => updateRule(record.id, 'rewardedProb', v)}
                         formatter={(value) => `${value}%`}
                         parser={(value) => value?.replace('%', '') as unknown as number}
-                        className="w-20"
+                        class="w-20"
                     />
                  </div>
             </div>
@@ -235,7 +236,7 @@ export const EconomyView: React.FC<EconomyViewProps> = ({ selectedApp }) => {
   ];
 
   const rhythmColumns: ColumnsType<EconomyRule> = config.rhythmKeys.map(key => ({
-      title: <span className="text-xs text-indigo-600 font-medium">{key}</span>,
+      title: <span class="text-xs text-indigo-600 font-medium">{key}</span>,
       dataIndex: ['rhythms', key],
       key: `rhythm_${key}`,
       width: 100,
@@ -243,7 +244,7 @@ export const EconomyView: React.FC<EconomyViewProps> = ({ selectedApp }) => {
            <InputNumber 
               value={val ?? 0} 
               onChange={v => updateRhythmValue(record.id, key, v)} 
-              className="w-full"
+              class="w-full"
               controls={false}
            />
       )
@@ -273,14 +274,14 @@ export const EconomyView: React.FC<EconomyViewProps> = ({ selectedApp }) => {
         key: 'name',
         // Removed fixed width to allow expansion
         render: (val, record) => (
-            <div className="flex items-start gap-2 py-1">
-                <ListTodo size={16} className="text-slate-400 mt-2.5 shrink-0"/>
+            <div class="flex items-start gap-2 py-1">
+                <ListTodo size={16} class="text-slate-400 mt-2.5 shrink-0"/>
                 <TextArea 
                     value={val} 
-                    onChange={(e) => updateTask(record.id, 'name', e.target.value)} 
+                    onChange={(e) => updateTask(record.id, 'name', (e.target as any).value)} 
                     placeholder="输入任务详情..."
                     autoSize={{ minRows: 2, maxRows: 6 }} 
-                    className="text-sm"
+                    class="text-sm"
                 />
             </div>
         )
@@ -291,13 +292,13 @@ export const EconomyView: React.FC<EconomyViewProps> = ({ selectedApp }) => {
         key: 'count',
         width: 130,
         render: (val, record) => (
-            <div className="flex flex-col justify-start h-full">
+            <div class="flex flex-col justify-start h-full">
                 <InputNumber 
                     value={val} 
                     onChange={(v) => updateTask(record.id, 'count', v)} 
                     placeholder="无限制"
-                    className="w-full"
-                    prefix={<Hash size={14} className="text-slate-400 mr-1"/>}
+                    class="w-full"
+                    prefix={<Hash size={14} class="text-slate-400 mr-1"/>}
                 />
             </div>
         )
@@ -308,14 +309,14 @@ export const EconomyView: React.FC<EconomyViewProps> = ({ selectedApp }) => {
         key: 'days',
         width: 130,
         render: (val, record) => (
-            <div className="flex flex-col justify-start h-full">
+            <div class="flex flex-col justify-start h-full">
                 <InputNumber 
                     value={val} 
                     onChange={(v) => updateTask(record.id, 'days', v)} 
                     placeholder="无限制"
-                    className="w-full"
-                    suffix={<span className="text-xs text-slate-400">天</span>}
-                    prefix={<Calendar size={14} className="text-slate-400 mr-1"/>}
+                    class="w-full"
+                    suffix={<span class="text-xs text-slate-400">天</span>}
+                    prefix={<Calendar size={14} class="text-slate-400 mr-1"/>}
                 />
             </div>
         )
@@ -337,35 +338,36 @@ export const EconomyView: React.FC<EconomyViewProps> = ({ selectedApp }) => {
   ];
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-2 mb-2">
-         <span className="text-xs font-bold text-yellow-600 bg-yellow-50 px-2 py-1 rounded-md border border-yellow-100 uppercase tracking-wide">
+    // Fix: replaced 'className' with 'class'
+    <div class="space-y-6">
+      <div class="flex items-center gap-2 mb-2">
+         <span class="text-xs font-bold text-yellow-600 bg-yellow-50 px-2 py-1 rounded-md border border-yellow-100 uppercase tracking-wide">
            网赚数值: {selectedApp.name}
          </span>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         
         {/* Rules Table (Full Width) */}
-        <div className="lg:col-span-2">
+        <div class="lg:col-span-2">
             <Card 
                 title="分层数值策略" 
                 action={<Button size="small" type="primary" icon={<Plus size={14}/>} onClick={handleAddRule}>添加区间</Button>}
-                className="overflow-hidden"
+                class="overflow-hidden"
             >
-            <div className="bg-slate-50 p-4 rounded-xl mb-5 border border-slate-100">
-                <div className="flex items-center gap-2 mb-2">
-                    <Settings2 size={14} className="text-slate-500" />
-                    <span className="text-xs font-bold text-slate-700 uppercase">产出类型定义 (Rhythm Fields)</span>
+            <div class="bg-slate-50 p-4 rounded-xl mb-5 border border-slate-100">
+                <div class="flex items-center gap-2 mb-2">
+                    <Settings2 size={14} class="text-slate-500" />
+                    <span class="text-xs font-bold text-slate-700 uppercase">产出类型 definition (Rhythm Fields)</span>
                 </div>
-                <div className="flex flex-wrap gap-2 items-center">
+                <div class="flex flex-wrap gap-2 items-center">
                     {config.rhythmKeys.map(key => (
                         <Tag 
                             key={key} 
                             closable 
                             onClose={() => handleRemoveKey(key)}
                             color="blue"
-                            className="mr-0"
+                            class="mr-0"
                         >
                             {key}
                         </Tag>
@@ -386,13 +388,13 @@ export const EconomyView: React.FC<EconomyViewProps> = ({ selectedApp }) => {
                     ) : (
                         <Tag 
                             onClick={() => setIsAddingKey(true)} 
-                            className="border-dashed bg-white hover:border-indigo-400 cursor-pointer mr-0 flex items-center gap-1"
+                            class="border-dashed bg-white hover:border-indigo-400 cursor-pointer mr-0 flex items-center gap-1"
                         >
                             <Plus size={10} /> 新增类型
                         </Tag>
                     )}
                 </div>
-                <p className="text-[10px] text-slate-400 mt-2">
+                <p class="text-[10px] text-slate-400 mt-2">
                     在此处定义的类型将自动作为列添加到下方的策略表中。适用于答题、转盘、签到等多种产出场景。
                 </p>
             </div>
@@ -410,9 +412,9 @@ export const EconomyView: React.FC<EconomyViewProps> = ({ selectedApp }) => {
         </div>
 
         {/* Withdrawal Tasks */}
-        <Card title="提现后续任务配置" className="lg:col-span-2" action={<Button size="small" icon={<Plus size={16}/>} onClick={handleAddTask}>添加任务</Button>}>
-           <div className="space-y-4">
-               <div className="bg-orange-50 p-3 rounded-lg text-xs text-orange-700 border border-orange-100 flex items-center gap-2">
+        <Card title="提现后续任务配置" class="lg:col-span-2" action={<Button size="small" icon={<Plus size={16}/>} onClick={() => handleAddTask()}>添加任务</Button>}>
+           <div class="space-y-4">
+               <div class="bg-orange-50 p-3 rounded-lg text-xs text-orange-700 border border-orange-100 flex items-center gap-2">
                   <Zap size={14} />
                   <span>
                     配置用户发起提现申请后需要完成的任务。任务名称支持长文本输入，方便记录详细要求。
@@ -432,7 +434,7 @@ export const EconomyView: React.FC<EconomyViewProps> = ({ selectedApp }) => {
         {/* Queue Config */}
         <Card 
             title="排队功能配置" 
-            className="lg:col-span-2"
+            class="lg:col-span-2"
             action={
                 <Switch 
                     checkedChildren="开启" 
@@ -442,30 +444,30 @@ export const EconomyView: React.FC<EconomyViewProps> = ({ selectedApp }) => {
                 />
             }
         >
-            <div className={`space-y-6 transition-all ${config.queue.enabled ? 'opacity-100' : 'opacity-50 grayscale pointer-events-none'}`}>
-                <div className="flex gap-4">
-                    <div className="flex-1">
-                        <Text className="block text-xs font-semibold text-slate-500 mb-1">初始排名 (Initial Rank)</Text>
+            <div class={`space-y-6 transition-all ${config.queue.enabled ? 'opacity-100' : 'opacity-50 grayscale pointer-events-none'}`}>
+                <div class="flex gap-4">
+                    <div class="flex-1">
+                        <Text class="block text-xs font-semibold text-slate-500 mb-1">初始排名 (Initial Rank)</Text>
                         <InputNumber 
                             value={config.queue.initialRank}
                             onChange={v => v !== null && setConfig(p => ({ ...p, queue: { ...p.queue, initialRank: v } }))}
-                            className="w-full"
+                            class="w-full"
                             min={0}
                         />
                     </div>
-                    <div className="flex-1">
-                        <Text className="block text-xs font-semibold text-slate-500 mb-1">总的排名 (Total Rank)</Text>
+                    <div class="flex-1">
+                        <Text class="block text-xs font-semibold text-slate-500 mb-1">总的排名 (Total Rank)</Text>
                         <InputNumber 
                             value={config.queue.totalRank}
                             onChange={v => v !== null && setConfig(p => ({ ...p, queue: { ...p.queue, totalRank: v } }))}
-                            className="w-full"
+                            class="w-full"
                             min={0}
                         />
                     </div>
                 </div>
 
                 <div>
-                    <Text className="block text-xs font-semibold text-slate-500 mb-1">
+                    <Text class="block text-xs font-semibold text-slate-500 mb-1">
                         前进排名数组 (逗号分隔)
                     </Text>
                     <TextArea 
@@ -473,30 +475,30 @@ export const EconomyView: React.FC<EconomyViewProps> = ({ selectedApp }) => {
                         value={advancementInput}
                         onChange={handleAdvancementsChange}
                         placeholder="例如: 20, 10, 10, 5"
-                        className="font-mono"
+                        class="font-mono"
                     />
-                    <div className="mt-2 flex items-center gap-2 text-xs">
-                        <Users size={12} className="text-slate-400"/>
-                        <span className="text-slate-500">
+                    <div class="mt-2 flex items-center gap-2 text-xs">
+                        <Users size={12} class="text-slate-400"/>
+                        <span class="text-slate-500">
                              当前 {config.queue.advancements.length} 个任务节点
                         </span>
                     </div>
                 </div>
 
                 {/* Validation Status */}
-                <div className={`p-3 rounded-lg border flex items-start gap-3 ${queueValidation.isValid ? 'bg-green-50 border-green-200 text-green-700' : 'bg-red-50 border-red-200 text-red-700'}`}>
-                    {queueValidation.isValid ? <CheckCircle2 size={18} className="mt-0.5 shrink-0"/> : <AlertCircle size={18} className="mt-0.5 shrink-0"/>}
-                    <div className="flex-1">
-                        <div className="font-semibold text-sm">
+                <div class={`p-3 rounded-lg border flex items-start gap-3 ${queueValidation.isValid ? 'bg-green-50 border-green-200 text-green-700' : 'bg-red-50 border-red-200 text-red-700'}`}>
+                    {queueValidation.isValid ? <CheckCircle2 size={18} class="mt-0.5 shrink-0"/> : <AlertCircle size={18} class="mt-0.5 shrink-0"/>}
+                    <div class="flex-1">
+                        <div class="font-semibold text-sm">
                             {queueValidation.isValid ? '配置校验通过' : '配置校验未通过'}
                         </div>
-                        <div className="text-xs mt-1 opacity-90">
+                        <div class="text-xs mt-1 opacity-90">
                             目标差值 (Total - Initial): <strong>{queueValidation.targetDiff}</strong>
                             <br/>
                             当前数组总和 (Sum): <strong>{queueValidation.currentSum}</strong>
                         </div>
                         {!queueValidation.isValid && (
-                             <div className="text-xs mt-2 font-mono bg-white/50 p-1 rounded w-fit px-2 border border-red-100">
+                             <div class="text-xs mt-2 font-mono bg-white/50 p-1 rounded w-fit px-2 border border-red-100">
                                 差值: {queueValidation.targetDiff - queueValidation.currentSum}
                              </div>
                         )}
